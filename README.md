@@ -11,8 +11,8 @@ APCS2 PD08
 ## METHODS   &    VARIABLES (in v2)
 
 * ArrayList<String> _data
- 
- * Underlying data storage container
+
+  * Underlying data storage container
 
 * add(String input)
 
