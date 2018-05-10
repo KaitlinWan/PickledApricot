@@ -1,8 +1,7 @@
 /*
   Joan Chirinos, Mohtasim Howlader, Kaitlin Wan
-  Lab
+  Lab03
   APCS2 pd08
-  2018-9-18
 */
 
 import java.util.ArrayList;
