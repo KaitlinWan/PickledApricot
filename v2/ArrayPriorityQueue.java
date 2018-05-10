@@ -16,8 +16,9 @@ public class ArrayPriorityQueue implements PriorityQueue {
   }
 
 
-  //sorts queue based on priority upon adding, sort of like binary search
-  //O(logn)
+  //keeps queue sorted upon adding to get constant time in the other methods
+  //uses whereToAdd to find add-at-index position
+  //O(n)
   public void add(String toAdd) {
     if (size() == 0 || _data.get(size() - 1).compareTo(toAdd) < 0) {
       _data.add(toAdd);
@@ -25,6 +26,7 @@ public class ArrayPriorityQueue implements PriorityQueue {
     else _data.add(whereToAdd(toAdd), toAdd);
   }
 
+  //helper for add(String). Uses binary search to find location of insertion point
   private int whereToAdd(String toAdd) {
     int left = 0;
     int right = size();
@@ -47,6 +49,8 @@ public class ArrayPriorityQueue implements PriorityQueue {
     return this.size() == 0;
   }
 
+  //returns last element of AL, which should be of highest priority.
+  //throws RuntimeException if AL is empty
   //O(1)
   public String peekMin() {
     if (size() == 0) {
@@ -55,6 +59,8 @@ public class ArrayPriorityQueue implements PriorityQueue {
     return _data.get(size() - 1);
   }
 
+  //removes and returns last element of AL, which should be of highest priority.
+  //throws RuntimeException if AL is empty
   //O(1)
   public String removeMin() {
     if (size() == 0) {
@@ -68,7 +74,7 @@ public class ArrayPriorityQueue implements PriorityQueue {
   }
 
   public String toString() {
-    return "END: " + _data.toString() + " :FRONT";
+    return "BACK: " + _data.toString() + " :FRONT";
   }
 
   public static void main(String[] args) {
