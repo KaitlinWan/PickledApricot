@@ -24,7 +24,7 @@ public class ALHeap
   *****************************************************/
   public ALHeap()
   {
-    _heap = new ArrayList<Integer> _heap;
+    _heap = new ArrayList<Integer>();
   }
 
 
