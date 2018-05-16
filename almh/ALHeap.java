@@ -41,35 +41,53 @@ public class ALHeap
     if (isEmpty()) return "";
 
     //if _heap.size() == 1 just return the el
-    if (_heap.size() == 1) return _heap[0];
+    if (_heap.size() == 1) return "\n=====\n " + _heap.get(0) + "\n=====\n";
 
     //how many possible leaves in heap dictates how wide each level should be
-    int maxWidth = Math.pow(2, Math.floor(Math.log(_heap.size() / Math.log(2))) * 2;
+    int maxWidth = (int)(Math.pow(2, Math.floor( Math.log(_heap.size()) / Math.log(2) )) * 7);
 
     Integer[] oldEls = {0};
-    String ret = pad(oldEls, maxWidth);
-    for (int level = 0; level < Math.floor(Math.log(heap.size()) / Math.log(2)); level++) {
-      Integer[] els = new Integer[Math.pow(2, level + 1)];
-      elsIndex = 0;
+    String ret = "\n";
+    for (int i = 0; i < maxWidth; i++) {
+      ret += "=";
+    }
+    ret += "\n" + pad(oldEls, maxWidth);
+    for (int level = 0; level < Math.floor(Math.log(_heap.size()) / Math.log(2)); level++) {
+      Integer[] els = new Integer[(int)(Math.pow(2, level + 1))];
+      int elsIndex = 0;
       for (Integer i : oldEls) {
-        els[elsIndex] = _heap.get(2 * i + 1);
-        els[elsIndex + 1] = _heap.get(2 * i + 2);
+        els[elsIndex] = ((2 * i + 1) < _heap.size()) ? 2 * i + 1 : -1;
+        els[elsIndex + 1] = ((2 * i + 2) < _heap.size()) ? 2 * i + 2 : -1;
         elsIndex += 2;
       }
-      ret += "\n" + pad(els, maxWidth);
+      ret += "\n\n" + pad(els, maxWidth);
       oldEls = els;
+    }
+
+    ret += "\n";
+    for (int i = 0; i < maxWidth; i++) {
+      ret += "=";
     }
 
     return ret;
   }//O(?)
 
   public String pad(Integer[] nums, int width) {
-    int numZeros = (width - nums.length) / nums.length;
+    int numSpaces = width / nums.length;
     String ret = "";
     for (Integer i : nums) {
-      ret += i;
-      for (int x = 0; x < numZeros; x++) {
-        ret += " ";
+      if (i == -1) {
+        for (int x = 0; x < numSpaces; x++) {
+          ret += " ";
+        }
+      }
+      else {
+        String toAdd = _heap.get(i) + "";
+        int padSize = numSpaces - toAdd.length();
+        int padStart = toAdd.length() + padSize / 2;
+        toAdd = String.format("%" + padStart + "s", toAdd);
+        toAdd = String.format("%-" + numSpaces + "s", toAdd);
+        ret += toAdd;
       }
     }
     return ret;
