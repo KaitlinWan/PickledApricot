@@ -37,8 +37,43 @@ public class ALHeap
   *****************************************************/
   public String toString()
   {
-    return _heap.toString();
+    //if empty return ""
+    if (isEmpty()) return "";
+
+    //if _heap.size() == 1 just return the el
+    if (_heap.size() == 1) return _heap[0];
+
+    //how many possible leaves in heap dictates how wide each level should be
+    int maxWidth = Math.pow(2, Math.floor(Math.log(_heap.size() / Math.log(2))) * 2;
+
+    Integer[] oldEls = {0};
+    String ret = pad(oldEls, maxWidth);
+    for (int level = 0; level < Math.floor(Math.log(heap.size()) / Math.log(2)); level++) {
+      Integer[] els = new Integer[Math.pow(2, level + 1)];
+      elsIndex = 0;
+      for (Integer i : oldEls) {
+        els[elsIndex] = _heap.get(2 * i + 1);
+        els[elsIndex + 1] = _heap.get(2 * i + 2);
+        elsIndex += 2;
+      }
+      ret += "\n" + pad(els, maxWidth);
+      oldEls = els;
+    }
+
+    return ret;
   }//O(?)
+
+  public String pad(Integer[] nums, int width) {
+    int numZeros = (width - nums.length) / nums.length;
+    String ret = "";
+    for (Integer i : nums) {
+      ret += i;
+      for (int x = 0; x < numZeros; x++) {
+        ret += " ";
+      }
+    }
+    return ret;
+  }
 
 
   /*****************************************************
