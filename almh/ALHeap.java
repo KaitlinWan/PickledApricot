@@ -1,8 +1,8 @@
 /*
 PickledApricot - Joan Chirinos, Mohtasim Howlader, Kaitlin Wan
 APCS2 pd08
-HW49 -- Heap o'Trouble
-2018-05-14
+HW49 -- Sink || Swim
+2018-05-15
 */
 
 /*****************************************************
@@ -37,6 +37,7 @@ public class ALHeap
   *****************************************************/
   public String toString()
   {
+    return _heap.toString();
   }//O(?)
 
 
@@ -46,7 +47,8 @@ public class ALHeap
   *****************************************************/
   public boolean isEmpty()
   {
-  }//O(?)
+    return _heap.size() == 0;
+  }//O(1)
 
 
   /*****************************************************
@@ -56,7 +58,8 @@ public class ALHeap
   *****************************************************/
   public Integer peekMin()
   {
-  }//O(?)
+    return _heap.get(0);
+  }//O(1)
 
 
   /*****************************************************
@@ -66,7 +69,25 @@ public class ALHeap
   *****************************************************/
   public void add( Integer addVal )
   {
-  }//O(?)
+    //add addVal to end of heap
+    _heap.add(addVal);
+
+    //if this is the first val added to heap, leave it
+    if (isEmpty()) return;
+
+    //otherwise, store vals of addVal and parent
+    int index = _heap.size() - 1;
+    int pIndex = (index - 1) / 2;
+
+    //while addVal < parent, swap them
+    while (index != 0 && addVal < _heap.get(pIndex)) {
+      swap(index, pIndex);
+
+      //redefine the index and parent to restart the comparison/swap process
+      index = pIndex;
+      pIndex = (index - 1) / 2;
+    }
+  }//O(logn)
 
 
   /*****************************************************
@@ -76,7 +97,46 @@ public class ALHeap
   *****************************************************/
   public Integer removeMin()
   {
-  }//O(?)
+    //if heap is empty, throw exception
+    if (isEmpty()) return null;
+
+    //if only 1 el, you don't have to do the rest of the method. just remove and return
+    if (_heap.size() == 1) {
+      return _heap.remove(0);
+    }
+
+    //smallest is at index 0, so replace it with last element in heap
+    Integer toReturn = _heap.get(0);
+    swap(0, _heap.size() - 1);
+    _heap.remove(_heap.size() - 1);
+
+    //now we're in a state that the "min" element might not be min.
+    //swap until it's in the right place
+
+    int index = 0;
+
+    //while the element has children
+    while (minChildPos(index) != -1) {
+
+      //store the minChildPos so you don't have to call it a lot
+      int mcp = minChildPos(index);
+
+      //if the smallest child is less than the parent, shouldSwap = true. Else shouldSwap = false;
+      boolean shouldSwap = (minOf(_heap.get(index), _heap.get(mcp)) == _heap.get(mcp)) ? true : false;
+
+      //if the smallest child is less than the parent, swap them and go again
+      if (shouldSwap) {
+        swap(index, mcp);
+        index = mcp;
+      }
+
+      //if not, you're done
+      else break;
+    }
+
+    //return the removed value
+    return toReturn;
+  }//O(logn)
 
 
   /*****************************************************
@@ -87,16 +147,39 @@ public class ALHeap
   *****************************************************/
   private int minChildPos( int pos )
   {
-  }//O(?)
+    if (pos >= _heap.size()) return -1;
+
+    //store pos of children
+    int lIndex = 2 * pos + 1;
+    int rIndex = 2 * pos + 2;
+
+    //if no children, return -1
+    if (lIndex >= _heap.size() && rIndex >= _heap.size()) return -1;
+
+    //if only 1 child, return the other's index
+    if (lIndex >= _heap.size()) return rIndex;
+    if (rIndex >= _heap.size()) return lIndex;
+
+    //if 2 children, find and return the min
+    int l = _heap.get(lIndex);
+    int r = _heap.get(rIndex);
+
+    //if min(l, r) == r, minPos = rIndex. Else, minPos = lIndex
+    int minPos = (minOf(l, r) == r) ? rIndex : lIndex;
+
+    //return the pos of smallest child
+    return minPos;
+
+  }//O(1)
 
 
   //************ aux helper fxns ***************
   private Integer minOf( Integer a, Integer b )
   {
     if ( a.compareTo(b) < 0 )
-    return a;
+      return a;
     else
-    return b;
+      return b;
   }
 
   //swap for an ArrayList
@@ -111,7 +194,6 @@ public class ALHeap
   //main method for testing
   public static void main( String[] args )
   {
-    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     ALHeap pile = new ALHeap();
 
     pile.add(2);
@@ -135,6 +217,7 @@ public class ALHeap
     pile.add(9);
     System.out.println(pile);
 
+
     System.out.println("removing " + pile.removeMin() + "...");
     System.out.println(pile);
     System.out.println("removing " + pile.removeMin() + "...");
@@ -157,6 +240,8 @@ public class ALHeap
     System.out.println(pile);
     System.out.println("removing " + pile.removeMin() + "...");
     System.out.println(pile);
+    /*~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
   }//end main()
 
