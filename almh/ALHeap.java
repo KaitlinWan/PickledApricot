@@ -40,8 +40,11 @@ public class ALHeap
     //if empty return ""
     if (isEmpty()) return "";
 
-    //if _heap.size() == 1 just return the el
-    if (_heap.size() == 1) return "\n=====\n " + _heap.get(0) + "\n=====\n";
+    //if _heap.size() == 1 just return the el (padded)
+    if (_heap.size() == 1) {
+      Integer[] temp = {0};
+      return "\n=======\n" + pad(temp, 7) + "\n=======\n";
+    }
 
     //how many possible leaves in heap dictates how wide each level should be
     int maxWidth = (int)(Math.pow(2, Math.floor( Math.log(_heap.size()) / Math.log(2) )) * 7);
