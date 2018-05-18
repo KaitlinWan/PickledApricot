@@ -29,10 +29,10 @@ public class RunMedDriver
   public static void main( String[] args )
   {
 
-    // RunMed r = new RunMed();
+    RunMed r = new RunMed();
 
     int n;
-    int median;
+    double median;
     int count = 0;
     Scanner sc = new Scanner( System.in );
 
@@ -44,9 +44,9 @@ public class RunMedDriver
         count++;
         System.out.print("this many ints have been seen: " + count + "\n");
 
-        // r.add(n);
-        // median = r.getMedian();
-        // System.out.print("median is now " + median + "\n");
+        r.add(n);
+        median = r.getMedian();
+        System.out.print("median is now " + median + "\n");
       } catch (Exception e) {
         System.err.println("BOOP! probs w yer input:\n"+e);
       }
