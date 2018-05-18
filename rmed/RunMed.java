@@ -5,13 +5,29 @@ HW50 -- Run Run Run
 2018-05-15
 */
 
+/***
+ * Algo for add
+ * 1. If both heaps are empty, add to lilvals
+ * 2. Else if one heap is empty, compare the new value with the other heap and add it
+ *    to a heap so that largest element is in lilvals and smallest in bigvals
+ * 3. Else if the new value < the root of bigvals (biggest small number), add it to
+ *    bigvals
+ * 4. Else, add the new value to lilvals
+ * 5. While there's a size difference of >= 2 in both heaps, remove the root from the
+ *    largest heap and add it to the other heap
+ *
+ * Algo for median
+ * 1. If the sizes of the heaps are equal, take the mean of the roots of both
+ * 2. Else, the median is the root of the largest heap
+ ***/
+
 import java.util.NoSuchElementException;
 
 public class RunMed {
 
   //instance vars
-  ALHeapMin lilvals;
-  ALHeapMax bigvals;
+  private ALHeapMin lilvals;
+  private ALHeapMax bigvals;
 
   public RunMed() {
     lilvals = new ALHeapMin();
@@ -40,6 +56,8 @@ public class RunMed {
       return;
     }
 
+    //if one is empty, compare newVal with non-empty heap and put in the right
+    //heap (so that largest element is in lilvals and smallest in bigvals)
     if (bigvals.isEmpty()) {
       if (newVal > lilvals.peekMin()) lilvals.add(newVal);
       else bigvals.add(newVal);
@@ -76,8 +94,6 @@ public class RunMed {
 
     for (int i = 0; i < 11; i++) {
       r.add(i);
-      System.out.println("lilvals\n" + r.lilvals);
-      System.out.println("bigvals\n" + r.bigvals);
       System.out.println("median: " + r.getMedian());
     }
 
