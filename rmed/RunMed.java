@@ -40,9 +40,18 @@ public class RunMed {
       return;
     }
 
-    //else if newVal < the largest number in bigvals, add it to bigvals
-    if (bigvals.isEmpty() || newVal < bigvals.peekMax()) bigvals.add(newVal);
+    if (bigvals.isEmpty()) {
+      if (newVal > lilvals.peekMin()) lilvals.add(newVal);
+      else bigvals.add(newVal);
+    }
 
+    else if (lilvals.isEmpty()) {
+      if (newVal < bigvals.peekMax()) bigvals.add(newVal);
+      else lilvals.add(newVal);
+    }
+
+    //else if newVal < the largest number in bigvals, add it to bigvals
+    else if (newVal < bigvals.peekMax()) bigvals.add(newVal);
     //else add it to lilvals
     else lilvals.add(newVal);
 
